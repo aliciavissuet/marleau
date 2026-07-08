@@ -4,7 +4,7 @@ type LayeredLogoProps = {
   isPlaying?: boolean
 }
 
-const textureSize = { width: 963, height: 641 }
+const textureSize = { width: 1445, height: 962 }
 
 const vertexShaderSource = `
 attribute vec2 a_position;
@@ -251,7 +251,7 @@ export function LayeredLogo({ isPlaying = true }: LayeredLogoProps) {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
       animationFrame = requestAnimationFrame(render)
     }
-    image.src = '/marleau-component-lines.png'
+    image.src = '/marleau-component-lines@3x.png'
 
     return () => {
       disposed = true
