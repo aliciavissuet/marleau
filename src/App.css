@@ -30,6 +30,56 @@ h1 {
   letter-spacing: 0;
 }
 
+.page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  gap: 22px;
+  align-content: center;
+  justify-items: center;
+  background: #030303;
+  color: #f7f2ea;
+  opacity: 1;
+  transition:
+    opacity 520ms ease,
+    visibility 520ms ease;
+}
+
+.page-loader.is-hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.loader-mark {
+  font-family: 'Arial Black', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-size: clamp(1.35rem, 4vw, 2.4rem);
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  line-height: 1;
+  text-indent: 0.18em;
+  text-shadow:
+    0 0 14px rgb(255 79 216 / 0.28),
+    0 0 22px rgb(65 247 255 / 0.18);
+}
+
+.loader-line {
+  width: min(220px, 52vw);
+  height: 2px;
+  overflow: hidden;
+  background: rgb(247 242 234 / 0.14);
+}
+
+.loader-line::before {
+  display: block;
+  width: 42%;
+  height: 100%;
+  content: '';
+  background: linear-gradient(90deg, #ff4fd8, #f7f2ea, #41f7ff);
+  filter: drop-shadow(0 0 12px rgb(255 79 216 / 0.6));
+  animation: loader-scan 950ms ease-in-out infinite;
+}
+
 .layered-logo,
 .hero-logo {
   display: block;
@@ -163,6 +213,16 @@ h1 {
   stroke-width: 2.15;
 }
 
+@keyframes loader-scan {
+  0% {
+    transform: translateX(-110%);
+  }
+
+  100% {
+    transform: translateX(250%);
+  }
+}
+
 @media (max-width: 780px) {
   .layered-logo-inner {
     top: clamp(104px, 17vh, 138px);
@@ -189,6 +249,11 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .loader-line::before {
+    animation: none;
+    transform: translateX(70%);
+  }
+
   .layered-logo-canvas {
     transform: none !important;
   }
