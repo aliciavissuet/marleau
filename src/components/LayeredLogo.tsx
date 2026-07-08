@@ -82,7 +82,7 @@ void main() {
     sin(contourCoord * 20.0 - u_time * 0.95) * 0.55 +
     sin(uv.x * 12.0 + uv.y * 7.0 + u_time * 0.62) * 0.28;
   vec2 fieldPull =
-    lineDirection * (primaryMotion + secondaryMotion + tertiaryMotion + quaternaryMotion) * 0.0031 +
+    lineDirection * (primaryMotion + secondaryMotion + tertiaryMotion + quaternaryMotion) * 0.00372 +
     lineDirection * ambientMotion * 0.0011;
   vec2 baseUv = clamp(
     uv + cursorWarp + fieldPull * u_audio,
