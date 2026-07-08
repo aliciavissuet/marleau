@@ -226,20 +226,21 @@ h1 {
 @media (max-width: 780px) {
   .layered-logo-inner {
     position: fixed;
-    top: auto;
+    top: clamp(142px, 21dvh, 184px);
     right: auto;
-    bottom: -34px;
+    bottom: auto;
     left: 50%;
-    width: max(100vw, calc((100dvh - clamp(104px, 17vh, 138px) + 60px) * 1.502));
+    width: max(100vw, calc((100dvh - clamp(142px, 21dvh, 184px) + 42px) * 1.502));
     min-width: 100vw;
-    height: calc(100dvh - clamp(104px, 17vh, 138px) + 60px);
+    height: calc(100dvh - clamp(142px, 21dvh, 184px) + 42px);
     transform: translateX(-50%);
   }
 
   @supports (height: 100lvh) {
     .layered-logo-inner {
-      width: max(100vw, calc((100lvh - clamp(104px, 17vh, 138px) + 60px) * 1.502));
-      height: calc(100lvh - clamp(104px, 17vh, 138px) + 60px);
+      top: clamp(142px, 21lvh, 184px);
+      width: max(100vw, calc((100lvh - clamp(142px, 21lvh, 184px) + 42px) * 1.502));
+      height: calc(100lvh - clamp(142px, 21lvh, 184px) + 42px);
     }
   }
 
