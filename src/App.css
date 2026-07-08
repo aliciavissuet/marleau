@@ -59,8 +59,8 @@ h1 {
   line-height: 1;
   text-indent: 0.18em;
   text-shadow:
-    0 0 14px rgb(255 79 216 / 0.28),
-    0 0 22px rgb(65 247 255 / 0.18);
+    0 0 14px rgb(247 242 234 / 0.2),
+    0 0 28px rgb(247 242 234 / 0.12);
 }
 
 .loader-line {
@@ -75,8 +75,8 @@ h1 {
   width: 42%;
   height: 100%;
   content: '';
-  background: linear-gradient(90deg, #ff4fd8, #f7f2ea, #41f7ff);
-  filter: drop-shadow(0 0 12px rgb(255 79 216 / 0.6));
+  background: linear-gradient(90deg, transparent, #f7f2ea, transparent);
+  filter: drop-shadow(0 0 10px rgb(247 242 234 / 0.42));
   animation: loader-scan 950ms ease-in-out infinite;
 }
 
@@ -134,42 +134,53 @@ h1 {
   transform: translateX(-50%);
 }
 
+.hero-kicker {
+  position: fixed;
+  top: calc(clamp(28px, 7vh, 72px) + min(76vw, 780px) * 0.109 + clamp(18px, 2.8vh, 32px));
+  left: 50%;
+  z-index: 2;
+  margin: 0;
+  color: rgb(247 242 234 / 0.76);
+  font-size: clamp(0.64rem, 1.1vw, 0.78rem);
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  line-height: 1;
+  text-indent: 0.28em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+}
+
 .social-links {
   position: fixed;
-  right: clamp(18px, 4vw, 42px);
-  bottom: calc(18px + env(safe-area-inset-bottom));
+  top: calc(clamp(28px, 7vh, 72px) + min(76vw, 780px) * 0.109 + clamp(48px, 7vh, 72px));
+  left: 50%;
   z-index: 3;
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
+  transform: translateX(-50%);
 }
 
 .social-link {
   position: relative;
   display: grid;
-  width: 54px;
-  height: 54px;
-  color: #ff4fd8;
-  opacity: 0.94;
+  width: 38px;
+  height: 38px;
+  color: #f7f2ea;
+  opacity: 0.86;
   place-items: center;
   filter:
     drop-shadow(0 0 2px rgb(0 0 0 / 0.92))
-    drop-shadow(0 0 7px rgb(255 79 216 / 0.9))
-    drop-shadow(0 0 18px rgb(255 79 216 / 0.64))
-    drop-shadow(0 0 36px rgb(255 79 216 / 0.36));
+    drop-shadow(0 0 8px rgb(247 242 234 / 0.24));
   transition:
+    color 180ms ease,
     filter 180ms ease,
     opacity 180ms ease,
     transform 180ms ease;
 }
 
 .social-link:nth-child(2) {
-  color: #41f7ff;
-  filter:
-    drop-shadow(0 0 2px rgb(0 0 0 / 0.92))
-    drop-shadow(0 0 7px rgb(65 247 255 / 0.9))
-    drop-shadow(0 0 18px rgb(65 247 255 / 0.64))
-    drop-shadow(0 0 36px rgb(65 247 255 / 0.36));
+  color: #f7f2ea;
 }
 
 .social-link:hover,
@@ -180,6 +191,7 @@ h1 {
 
 .social-link:first-child:hover,
 .social-link:first-child:focus-visible {
+  color: #ff4fd8;
   filter:
     drop-shadow(0 0 2px rgb(0 0 0 / 0.95))
     drop-shadow(0 0 10px rgb(255 79 216 / 1))
@@ -189,6 +201,7 @@ h1 {
 
 .social-link:nth-child(2):hover,
 .social-link:nth-child(2):focus-visible {
+  color: #41f7ff;
   filter:
     drop-shadow(0 0 2px rgb(0 0 0 / 0.95))
     drop-shadow(0 0 10px rgb(65 247 255 / 1))
@@ -204,8 +217,8 @@ h1 {
 .social-link svg {
   position: relative;
   z-index: 1;
-  width: 34px;
-  height: 34px;
+  width: 25px;
+  height: 25px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -226,37 +239,49 @@ h1 {
 @media (max-width: 780px) {
   .layered-logo-inner {
     position: fixed;
-    top: clamp(142px, 21dvh, 184px);
+    top: auto;
     right: auto;
-    bottom: auto;
+    bottom: -28px;
     left: 50%;
-    width: max(100vw, calc((100dvh - clamp(142px, 21dvh, 184px) + 42px) * 1.502));
-    min-width: 100vw;
-    height: calc(100dvh - clamp(142px, 21dvh, 184px) + 42px);
+    width: clamp(940px, 270vw, 1120px);
+    min-width: 0;
+    height: auto;
     transform: translateX(-50%);
   }
 
   @supports (height: 100lvh) {
     .layered-logo-inner {
-      top: clamp(142px, 21lvh, 184px);
-      width: max(100vw, calc((100lvh - clamp(142px, 21lvh, 184px) + 42px) * 1.502));
-      height: calc(100lvh - clamp(142px, 21lvh, 184px) + 42px);
+      bottom: -24px;
     }
   }
 
   .hero-wordmark {
-    width: min(86vw, 520px);
+    top: clamp(46px, 8vh, 68px);
+    width: min(78vw, 470px);
+  }
+
+  .hero-kicker {
+    top: calc(clamp(46px, 8vh, 68px) + min(78vw, 470px) * 0.109 + 18px);
+    font-size: 0.62rem;
+    letter-spacing: 0.26em;
+    text-indent: 0.26em;
   }
 
   .social-links {
-    right: 50%;
-    bottom: calc(16px + env(safe-area-inset-bottom));
-    transform: translateX(50%);
+    top: calc(clamp(46px, 8vh, 68px) + min(78vw, 470px) * 0.109 + 42px);
+    left: 50%;
+    gap: 8px;
+    transform: translateX(-50%);
   }
 
   .social-link {
-    width: 54px;
-    height: 54px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .social-link svg {
+    width: 24px;
+    height: 24px;
   }
 
 }

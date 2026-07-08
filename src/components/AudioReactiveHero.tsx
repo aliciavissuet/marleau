@@ -8,6 +8,7 @@ export function AudioReactiveHero() {
           MARLEAU
         </h1>
         <LayeredLogo />
+        <p className="hero-kicker">Coming Soon</p>
         <nav className="social-links" aria-label="MARLEAU social links">
           <a
             aria-label="Instagram"
