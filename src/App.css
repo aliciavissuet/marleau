@@ -241,9 +241,9 @@ h1 {
     position: fixed;
     top: auto;
     right: auto;
-    bottom: -28px;
+    bottom: -96px;
     left: 50%;
-    width: clamp(940px, 270vw, 1120px);
+    width: clamp(860px, 248vw, 1040px);
     min-width: 0;
     height: auto;
     transform: translateX(-50%);
@@ -251,7 +251,7 @@ h1 {
 
   @supports (height: 100lvh) {
     .layered-logo-inner {
-      bottom: -24px;
+      bottom: -96px;
     }
   }
 
