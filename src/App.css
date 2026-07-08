@@ -1,6 +1,6 @@
 .hero {
   position: relative;
-  min-height: 100svh;
+  min-height: 100dvh;
   overflow: hidden;
   background: #030303;
   color: #f7f2ea;
@@ -8,7 +8,7 @@
 }
 
 .hero-content {
-  min-height: 100svh;
+  min-height: 100dvh;
   display: block;
   padding: 0;
   text-align: center;
@@ -84,7 +84,7 @@ h1 {
 .hero-logo {
   display: block;
   width: 100%;
-  min-height: 100svh;
+  min-height: 100dvh;
   mix-blend-mode: screen;
   transform: translateZ(0);
 }
@@ -102,7 +102,7 @@ h1 {
 }
 
 .hero-logo {
-  height: 100svh;
+  height: 100dvh;
   object-fit: contain;
 }
 
@@ -225,10 +225,22 @@ h1 {
 
 @media (max-width: 780px) {
   .layered-logo-inner {
-    top: clamp(104px, 17vh, 138px);
-    width: auto;
+    position: fixed;
+    top: auto;
+    right: auto;
+    bottom: -34px;
+    left: 50%;
+    width: max(100vw, calc((100dvh - clamp(104px, 17vh, 138px) + 60px) * 1.502));
     min-width: 100vw;
-    height: calc(100svh - clamp(104px, 17vh, 138px));
+    height: calc(100dvh - clamp(104px, 17vh, 138px) + 60px);
+    transform: translateX(-50%);
+  }
+
+  @supports (height: 100lvh) {
+    .layered-logo-inner {
+      width: max(100vw, calc((100lvh - clamp(104px, 17vh, 138px) + 60px) * 1.502));
+      height: calc(100lvh - clamp(104px, 17vh, 138px) + 60px);
+    }
   }
 
   .hero-wordmark {

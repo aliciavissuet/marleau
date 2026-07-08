@@ -21,7 +21,9 @@ precision mediump float;
 
 uniform sampler2D u_texture;
 uniform vec2 u_cursor;
+uniform vec2 u_cursor2;
 uniform float u_cursorIntensity;
+uniform float u_cursorIntensity2;
 uniform float u_audio;
 uniform float u_time;
 
@@ -42,6 +44,20 @@ void main() {
   float ripple = sin(dist * 24.0 - u_time * 1.65) * 0.0055;
   float elasticPull = falloff * 0.021;
   vec2 cursorWarp = dir * (ripple + elasticPull) * local;
+
+  vec2 cursor2 = vec2(u_cursor2.x, 1.0 - u_cursor2.y);
+  vec2 delta2 = uv - cursor2;
+  float dist2 = length(delta2);
+  float radius2 = 0.22;
+  float local2 = smoothstep(radius2, 0.0, dist2);
+  local2 = local2 * local2 * (3.0 - 2.0 * local2);
+  local2 *= u_cursorIntensity2;
+  vec2 dir2 = dist2 > 0.0001 ? delta2 / dist2 : vec2(0.0);
+  float falloff2 = max(0.0, 1.0 - dist2 / radius2);
+  falloff2 *= falloff2;
+  float ripple2 = sin(dist2 * 20.0 - u_time * 1.2) * 0.0038;
+  float elasticPull2 = falloff2 * 0.014;
+  cursorWarp += dir2 * (ripple2 + elasticPull2) * local2;
 
   float rollProgress = fract(u_time * 0.12);
   float contourCoord = uv.y + sin((uv.x - 0.5) * 3.4) * 0.045;
@@ -158,11 +174,17 @@ export function LayeredLogo({ isPlaying = true }: LayeredLogoProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const cursorRef = useRef({
     intensity: 0,
+    intensity2: 0,
     targetIntensity: 0,
+    targetIntensity2: 0,
     targetX: 0.5,
+    targetX2: 0.64,
     targetY: 0.68,
+    targetY2: 0.56,
     x: 0.5,
+    x2: 0.64,
     y: 0.68,
+    y2: 0.56,
   })
 
   useEffect(() => {
@@ -172,6 +194,7 @@ export function LayeredLogo({ isPlaying = true }: LayeredLogoProps) {
     const gl = getLogoContext(canvas)
     if (!gl) return
 
+    const hasCoarsePointer = window.matchMedia('(pointer: coarse)').matches
     let animationFrame = 0
     let disposed = false
     let lastTimestamp = 0
@@ -181,7 +204,9 @@ export function LayeredLogo({ isPlaying = true }: LayeredLogoProps) {
     const positionLocation = gl.getAttribLocation(program, 'a_position')
     const textureLocation = gl.getUniformLocation(program, 'u_texture')
     const cursorLocation = gl.getUniformLocation(program, 'u_cursor')
+    const cursor2Location = gl.getUniformLocation(program, 'u_cursor2')
     const cursorIntensityLocation = gl.getUniformLocation(program, 'u_cursorIntensity')
+    const cursorIntensity2Location = gl.getUniformLocation(program, 'u_cursorIntensity2')
     const audioLocation = gl.getUniformLocation(program, 'u_audio')
     const timeLocation = gl.getUniformLocation(program, 'u_time')
     const buffer = gl.createBuffer()
@@ -219,9 +244,24 @@ export function LayeredLogo({ isPlaying = true }: LayeredLogoProps) {
       const time = timestamp / 1000
       const cursor = cursorRef.current
 
+      if (cursor.targetIntensity < 0.65) {
+        cursor.targetIntensity = hasCoarsePointer ? 0.42 : 0.26
+        cursor.targetX = 0.5 + Math.sin(time * 0.32) * 0.2
+        cursor.targetY = 0.64 + Math.cos(time * 0.24) * 0.18
+      }
+
+      const secondaryOffsetX = Math.sin(time * 0.74) * 0.16
+      const secondaryOffsetY = Math.cos(time * 0.58) * 0.12
+      cursor.targetX2 = clamp(cursor.targetX + secondaryOffsetX, 0.05, 0.95)
+      cursor.targetY2 = clamp(cursor.targetY + secondaryOffsetY, 0.05, 0.95)
+      cursor.targetIntensity2 = cursor.targetIntensity * 0.72
+
       cursor.x = damp(cursor.x, cursor.targetX, 8, deltaSeconds)
       cursor.y = damp(cursor.y, cursor.targetY, 8, deltaSeconds)
+      cursor.x2 = damp(cursor.x2, cursor.targetX2, 4.5, deltaSeconds)
+      cursor.y2 = damp(cursor.y2, cursor.targetY2, 4.5, deltaSeconds)
       cursor.intensity = damp(cursor.intensity, cursor.targetIntensity, 7, deltaSeconds)
+      cursor.intensity2 = damp(cursor.intensity2, cursor.targetIntensity2, 5, deltaSeconds)
 
       audioAmount = damp(audioAmount, 1, 1.5, deltaSeconds)
 
@@ -234,7 +274,9 @@ export function LayeredLogo({ isPlaying = true }: LayeredLogoProps) {
       gl.bindTexture(gl.TEXTURE_2D, texture)
       gl.uniform1i(textureLocation, 0)
       gl.uniform2f(cursorLocation, cursor.x, cursor.y)
+      gl.uniform2f(cursor2Location, cursor.x2, cursor.y2)
       gl.uniform1f(cursorIntensityLocation, cursor.intensity)
+      gl.uniform1f(cursorIntensity2Location, cursor.intensity2)
       gl.uniform1f(audioLocation, audioAmount)
       gl.uniform1f(timeLocation, time)
       gl.drawArrays(gl.TRIANGLES, 0, 6)
@@ -276,11 +318,16 @@ export function LayeredLogo({ isPlaying = true }: LayeredLogoProps) {
     cursorRef.current.targetIntensity = 0
   }
 
+  const handlePointerUp = () => {
+    cursorRef.current.targetIntensity = 0
+  }
+
   return (
     <div
       className={isPlaying ? 'layered-logo is-playing' : 'layered-logo'}
       onPointerLeave={handlePointerLeave}
       onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
     >
       <svg aria-hidden="true" className="hero-wordmark" viewBox="0 0 954 104">
         <path d="M0 100V0h24l31 50L86 0h24v100H84V43L64 78H47L26 43v57H0Z" />
