@@ -251,7 +251,7 @@ export function LayeredLogo({ isPlaying = true }: LayeredLogoProps) {
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
       animationFrame = requestAnimationFrame(render)
     }
-    image.src = '/marleau-component-lines@3x.png'
+    image.src = '/marleau-component-lines@3x-gapfix.png'
 
     return () => {
       disposed = true
