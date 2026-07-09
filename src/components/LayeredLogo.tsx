@@ -63,43 +63,43 @@ void main() {
   float contourCoord = uv.y + sin((uv.x - 0.5) * 3.4) * 0.045;
   vec2 lineDirection = normalize(vec2(0.22 + sin(uv.y * 6.0) * 0.08, -1.0));
 
-  float primaryCenter = mix(0.04, 0.96, rollProgress);
-  float primaryFade = smoothstep(0.0, 0.05, rollProgress) * (1.0 - smoothstep(0.95, 1.0, rollProgress));
-  float primaryDistance = abs(contourCoord - primaryCenter);
+  float primaryCenter = rollProgress;
+  float primarySignedDistance = fract(contourCoord - primaryCenter + 0.5) - 0.5;
+  float primaryDistance = abs(primarySignedDistance);
   float primaryBand = smoothstep(0.14, 0.0, primaryDistance);
-  primaryBand = primaryBand * primaryBand * (3.0 - 2.0 * primaryBand) * primaryFade;
-  float primaryMotion = sin((contourCoord - primaryCenter) * 10.0) * primaryBand;
+  primaryBand = primaryBand * primaryBand * (3.0 - 2.0 * primaryBand);
+  float primaryMotion = sin(primarySignedDistance * 10.0) * primaryBand;
 
   float secondaryProgress = fract(rollProgress + 0.25);
-  float secondaryCenter = mix(0.04, 0.96, secondaryProgress);
-  float secondaryFade = smoothstep(0.0, 0.05, secondaryProgress) * (1.0 - smoothstep(0.95, 1.0, secondaryProgress));
-  float secondaryDistance = abs(contourCoord - secondaryCenter);
+  float secondaryCenter = secondaryProgress;
+  float secondarySignedDistance = fract(contourCoord - secondaryCenter + 0.5) - 0.5;
+  float secondaryDistance = abs(secondarySignedDistance);
   float secondaryBand = smoothstep(0.14, 0.0, secondaryDistance);
-  secondaryBand = secondaryBand * secondaryBand * (3.0 - 2.0 * secondaryBand) * secondaryFade;
-  float secondaryMotion = sin((contourCoord - secondaryCenter) * 10.0) * secondaryBand;
+  secondaryBand = secondaryBand * secondaryBand * (3.0 - 2.0 * secondaryBand);
+  float secondaryMotion = sin(secondarySignedDistance * 10.0) * secondaryBand;
 
   float tertiaryProgress = fract(rollProgress + 0.5);
-  float tertiaryCenter = mix(0.04, 0.96, tertiaryProgress);
-  float tertiaryFade = smoothstep(0.0, 0.05, tertiaryProgress) * (1.0 - smoothstep(0.95, 1.0, tertiaryProgress));
-  float tertiaryDistance = abs(contourCoord - tertiaryCenter);
+  float tertiaryCenter = tertiaryProgress;
+  float tertiarySignedDistance = fract(contourCoord - tertiaryCenter + 0.5) - 0.5;
+  float tertiaryDistance = abs(tertiarySignedDistance);
   float tertiaryBand = smoothstep(0.14, 0.0, tertiaryDistance);
-  tertiaryBand = tertiaryBand * tertiaryBand * (3.0 - 2.0 * tertiaryBand) * tertiaryFade;
-  float tertiaryMotion = sin((contourCoord - tertiaryCenter) * 10.0) * tertiaryBand;
+  tertiaryBand = tertiaryBand * tertiaryBand * (3.0 - 2.0 * tertiaryBand);
+  float tertiaryMotion = sin(tertiarySignedDistance * 10.0) * tertiaryBand;
 
   float quaternaryProgress = fract(rollProgress + 0.75);
-  float quaternaryCenter = mix(0.04, 0.96, quaternaryProgress);
-  float quaternaryFade = smoothstep(0.0, 0.05, quaternaryProgress) * (1.0 - smoothstep(0.95, 1.0, quaternaryProgress));
-  float quaternaryDistance = abs(contourCoord - quaternaryCenter);
+  float quaternaryCenter = quaternaryProgress;
+  float quaternarySignedDistance = fract(contourCoord - quaternaryCenter + 0.5) - 0.5;
+  float quaternaryDistance = abs(quaternarySignedDistance);
   float quaternaryBand = smoothstep(0.14, 0.0, quaternaryDistance);
-  quaternaryBand = quaternaryBand * quaternaryBand * (3.0 - 2.0 * quaternaryBand) * quaternaryFade;
-  float quaternaryMotion = sin((contourCoord - quaternaryCenter) * 10.0) * quaternaryBand;
+  quaternaryBand = quaternaryBand * quaternaryBand * (3.0 - 2.0 * quaternaryBand);
+  float quaternaryMotion = sin(quaternarySignedDistance * 10.0) * quaternaryBand;
 
   float ambientMotion =
     sin(contourCoord * 20.0 - u_time * 0.95) * 0.55 +
     sin(uv.x * 12.0 + uv.y * 7.0 + u_time * 0.62) * 0.28;
   vec2 fieldPull =
-    lineDirection * (primaryMotion + secondaryMotion + tertiaryMotion + quaternaryMotion) * 0.00372 +
-    lineDirection * ambientMotion * 0.0011;
+    lineDirection * (primaryMotion + secondaryMotion + tertiaryMotion + quaternaryMotion) * 0.00484 +
+    lineDirection * ambientMotion * 0.00143;
   vec2 baseUv = clamp(
     uv + cursorWarp + fieldPull * u_audio,
     vec2(0.0),
