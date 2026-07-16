@@ -26,7 +26,7 @@ export function AudioReactiveHero() {
           <a
             aria-label="SoundCloud"
             className="social-link"
-            href="https://soundcloud.com/marleau"
+            href="https://soundcloud.com/marleau-324322514"
             rel="noreferrer"
             target="_blank"
           >
